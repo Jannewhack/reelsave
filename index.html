@@ -1,0 +1,48 @@
+<!doctype html><html lang="{{p.lang}}"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<title>{{p.title}}</title><meta name="description" content="{{p.desc}}">
+{% if domain %}<link rel="canonical" href="{{domain}}/{{slug}}">{% endif %}
+<meta property="og:title" content="{{p.title}}"><meta property="og:description" content="{{p.desc}}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"{{site}}","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+{{ad_head|safe}}
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0E0E12;color:#F5F5F7;font:16px/1.6 'Plus Jakarta Sans',system-ui,sans-serif}
+main{max-width:680px;margin:auto;padding:24px 20px}h1{font-size:28px;line-height:1.2;margin:8px 0}h2{font-size:20px}
+p,li{color:#C8C8D4}.mu{color:#A0A0B0;font-size:14px}a{color:#FF4D6D}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}nav a{padding:8px 14px;border-radius:999px;background:#1A1A22;border:1px solid #2E2E3A;color:#D0D0DA;text-decoration:none;font-size:13px}
+.row{display:flex;gap:8px}input{flex:1;min-width:0;height:52px;padding:0 14px;border-radius:14px;border:1px solid #2E2E3A;background:#1A1A22;color:#F5F5F7;font-size:15px}
+button{font:inherit;cursor:pointer}.sec{height:52px;padding:0 16px;border-radius:14px;border:1px solid #2E2E3A;background:#1A1A22;color:#F5F5F7;font-weight:600}
+.pri{width:100%;height:56px;margin-top:10px;border:0;border-radius:16px;background:#FF4D6D;color:#0E0E12;font-weight:800;font-size:16px}
+.card{display:flex;gap:14px;align-items:center;padding:12px;margin-top:12px;border-radius:16px;background:#1A1A22;border:1px solid #2E2E3A}
+.card img{width:90px;height:120px;object-fit:cover;border-radius:12px;background:#2E2E3A}.card div{flex:1}.card .pri{margin:8px 0 0;height:48px}
+#msg{color:#FF8FA3;min-height:24px;margin-top:10px}
+#gate{position:fixed;inset:0;background:rgba(14,14,18,.96);display:none;flex-direction:column;gap:16px;align-items:center;justify-content:center;padding:20px;text-align:center;z-index:9}
+#gate.on{display:flex}.bar{width:100%;max-width:340px;height:6px;border-radius:3px;background:#2E2E3A}.bar i{display:block;height:6px;border-radius:3px;background:#FF4D6D;width:0;transition:width 1s linear}
+.slot{min-height:90px;width:100%;max-width:340px;display:flex;align-items:center;justify-content:center;border:1px dashed #4A4A5A;border-radius:14px;color:#A0A0B0;font-size:13px}
+footer{margin-top:32px;padding-top:16px;border-top:1px solid #2E2E3A}
+</style></head><body><main>
+<h1>{{p.h1}}</h1><p>{{p.desc}}</p>
+<nav>{% for s,q in pages.items() if s %}<a href="/{{s}}">{{q.h1}}</a>{% endfor %}</nav>
+<label for="u" class="mu">Instagram link</label>
+<div class="row"><input id="u" placeholder="https://instagram.com/reel/..." autocomplete="off"><button class="sec" id="pb">Paste</button></div>
+<button class="pri" id="go">Download</button><div id="msg" role="status"></div><div id="res"></div>
+<div class="slot" style="margin-top:16px">{{ad_slot|safe if ad_slot else 'Ad space'}}</div>
+<h2>How to download</h2><ol><li>Open Instagram, tap Share, then Copy link.</li><li>Paste it above and press Download.</li><li>Watch the short ad, the file saves to your gallery automatically.</li></ol>
+<p>{{p.text}}</p>
+<h2>FAQ</h2><p><b>Is it free?</b> Yes, supported by ads.<br><b>Private accounts?</b> No, only public content works.<br><b>Watermark?</b> No, the original file is saved.</p>
+<footer class="mu"><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/dmca">DMCA</a><br>Not affiliated with Instagram or Meta. Download only content you own or have permission to use.</footer>
+</main>
+<div id="gate"><b id="gt">Your download starts after the ad</b><div class="slot" id="gs">{{ad_slot|safe if ad_slot else 'Ad plays here'}}</div><div class="bar"><i id="gb"></i></div><span class="mu" id="gc"></span></div>
+<script>
+const $=s=>document.querySelector(s),G={{gate}};
+$('#pb').onclick=async()=>{try{$('#u').value=await navigator.clipboard.readText()}catch(e){$('#msg').textContent='Paste manually (long press).'}};
+function start(it,i){const gate=$('#gate');gate.classList.add('on');let t=G;$('#gb').style.width='0';$('#gc').textContent=t+'s';
+ const iv=setInterval(()=>{t--;$('#gb').style.width=((G-t)/G*100)+'%';$('#gc').textContent=t>0?t+'s':'';
+  if(t<=0){clearInterval(iv);gate.classList.remove('on');location.href='/api/dl?u='+encodeURIComponent(it.url)+'&n=reelsave_'+Date.now()+'.'+it.ext}},1000);}
+$('#go').onclick=async()=>{const url=$('#u').value.trim();if(!url)return;$('#msg').textContent='Loading...';$('#res').textContent='';
+ try{const r=await fetch('/api/info',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});const d=await r.json();if(!r.ok)throw new Error(d.error);
+  $('#msg').textContent='';d.items.forEach((it,i)=>{const c=document.createElement('div');c.className='card';const im=document.createElement('img');
+   if(it.thumb)im.src='/api/dl?inline=1&u='+encodeURIComponent(it.thumb);im.alt='';const w=document.createElement('div');const t=document.createElement('b');
+   t.textContent=(it.kind==='video'?'Video':'Photo')+' '+(d.items.length>1?i+1:'');const b=document.createElement('button');b.className='pri';b.textContent='Watch ad & download';b.onclick=()=>start(it,i);
+   w.append(t,b);c.append(im,w);$('#res').append(c)})}catch(e){$('#msg').textContent=e.message}};
+</script></body></html>
