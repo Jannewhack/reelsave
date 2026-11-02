@@ -1,48 +1,84 @@
 <!doctype html><html lang="{{p.lang}}"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#0E0E12">
 <title>{{p.title}}</title><meta name="description" content="{{p.desc}}">
 {% if domain %}<link rel="canonical" href="{{domain}}/{{slug}}">{% endif %}
 <meta property="og:title" content="{{p.title}}"><meta property="og:description" content="{{p.desc}}">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"{{site}}","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 {{ad_head|safe}}
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0E0E12;color:#F5F5F7;font:16px/1.6 'Plus Jakarta Sans',system-ui,sans-serif}
-main{max-width:680px;margin:auto;padding:24px 20px}h1{font-size:28px;line-height:1.2;margin:8px 0}h2{font-size:20px}
-p,li{color:#C8C8D4}.mu{color:#A0A0B0;font-size:14px}a{color:#FF4D6D}
-nav{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}nav a{padding:8px 14px;border-radius:999px;background:#1A1A22;border:1px solid #2E2E3A;color:#D0D0DA;text-decoration:none;font-size:13px}
-.row{display:flex;gap:8px}input{flex:1;min-width:0;height:52px;padding:0 14px;border-radius:14px;border:1px solid #2E2E3A;background:#1A1A22;color:#F5F5F7;font-size:15px}
-button{font:inherit;cursor:pointer}.sec{height:52px;padding:0 16px;border-radius:14px;border:1px solid #2E2E3A;background:#1A1A22;color:#F5F5F7;font-weight:600}
-.pri{width:100%;height:56px;margin-top:10px;border:0;border-radius:16px;background:#FF4D6D;color:#0E0E12;font-weight:800;font-size:16px}
-.card{display:flex;gap:14px;align-items:center;padding:12px;margin-top:12px;border-radius:16px;background:#1A1A22;border:1px solid #2E2E3A}
-.card img{width:90px;height:120px;object-fit:cover;border-radius:12px;background:#2E2E3A}.card div{flex:1}.card .pri{margin:8px 0 0;height:48px}
-#msg{color:#FF8FA3;min-height:24px;margin-top:10px}
-#gate{position:fixed;inset:0;background:rgba(14,14,18,.96);display:none;flex-direction:column;gap:16px;align-items:center;justify-content:center;padding:20px;text-align:center;z-index:9}
-#gate.on{display:flex}.bar{width:100%;max-width:340px;height:6px;border-radius:3px;background:#2E2E3A}.bar i{display:block;height:6px;border-radius:3px;background:#FF4D6D;width:0;transition:width 1s linear}
-.slot{min-height:90px;width:100%;max-width:340px;display:flex;align-items:center;justify-content:center;border:1px dashed #4A4A5A;border-radius:14px;color:#A0A0B0;font-size:13px}
-footer{margin-top:32px;padding-top:16px;border-top:1px solid #2E2E3A}
-</style></head><body><main>
-<h1>{{p.h1}}</h1><p>{{p.desc}}</p>
-<nav>{% for s,q in pages.items() if s %}<a href="/{{s}}">{{q.h1}}</a>{% endfor %}</nav>
-<label for="u" class="mu">Instagram link</label>
-<div class="row"><input id="u" placeholder="https://instagram.com/reel/..." autocomplete="off"><button class="sec" id="pb">Paste</button></div>
-<button class="pri" id="go">Download</button><div id="msg" role="status"></div><div id="res"></div>
-<div class="slot" style="margin-top:16px">{{ad_slot|safe if ad_slot else 'Ad space'}}</div>
-<h2>How to download</h2><ol><li>Open Instagram, tap Share, then Copy link.</li><li>Paste it above and press Download.</li><li>Watch the short ad, the file saves to your gallery automatically.</li></ol>
-<p>{{p.text}}</p>
-<h2>FAQ</h2><p><b>Is it free?</b> Yes, supported by ads.<br><b>Private accounts?</b> No, only public content works.<br><b>Watermark?</b> No, the original file is saved.</p>
-<footer class="mu"><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/dmca">DMCA</a><br>Not affiliated with Instagram or Meta. Download only content you own or have permission to use.</footer>
-</main>
-<div id="gate"><b id="gt">Your download starts after the ad</b><div class="slot" id="gs">{{ad_slot|safe if ad_slot else 'Ad plays here'}}</div><div class="bar"><i id="gb"></i></div><span class="mu" id="gc"></span></div>
+:root{--bg:#0E0E12;--sf:#1A1A22;--bd:#2E2E3A;--tx:#F5F5F7;--mu:#A0A0B0;--ac:#FF4D6D}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 'Plus Jakarta Sans',system-ui,sans-serif}
+.w{max-width:520px;margin:0 auto;padding:20px 20px 40px;display:flex;flex-direction:column;gap:20px}
+.hd{display:flex;align-items:center;justify-content:space-between}.lg{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--tx);text-decoration:none}
+.lm{width:36px;height:36px;border-radius:10px;background:var(--ac);color:#0E0E12;display:grid;place-items:center}
+.lang{padding:10px 14px;border-radius:999px;background:var(--sf);border:1px solid var(--bd);color:var(--tx);text-decoration:none;font-size:13px;font-weight:600}
+h1{margin:0 0 8px;font-size:28px;line-height:1.2;font-weight:800}h2{margin:0 0 12px;font-size:18px;font-weight:800}
+.sub,.mu{color:var(--mu);font-size:14px;margin:0}.view{display:none;flex-direction:column;gap:20px;animation:f .25s ease}
+@keyframes f{from{opacity:0;transform:translateY(6px)}}@media(prefers-reduced-motion:reduce){.view{animation:none}}
+body[data-v=home] #v-home,body[data-v=prev] #v-prev,body[data-v=ad] #v-ad,body[data-v=done] #v-done{display:flex}.seo{display:none}body[data-v=home] .seo{display:block}
+label{font-size:13px;font-weight:600;color:var(--mu)}.row{display:flex;gap:8px;margin:8px 0 12px}
+input{flex:1;min-width:0;height:52px;padding:0 14px;border-radius:14px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font:inherit;font-size:15px}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+button{font:inherit;cursor:pointer}.sc{height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-weight:600}
+.pr{width:100%;height:56px;border:0;border-radius:16px;background:var(--ac);color:#0E0E12;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:10px}
+.pr:disabled{opacity:.6;cursor:wait}.bk{width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);display:grid;place-items:center;flex:none}
+.sp{width:18px;height:18px;border:2px solid #0E0E12;border-top-color:transparent;border-radius:50%;animation:r .7s linear infinite}@keyframes r{to{transform:rotate(360deg)}}
+#msg{color:#FF8FA3;font-size:14px;min-height:0}#msg:not(:empty){margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips a{padding:8px 14px;border-radius:999px;background:var(--sf);border:1px solid var(--bd);color:#D0D0DA;text-decoration:none;font-size:13px}
+.slot{min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #4A4A5A;border-radius:14px;color:var(--mu);font-size:13px;overflow:hidden}
+.cd{display:flex;gap:16px;padding:12px;border-radius:16px;background:var(--sf);border:1px solid var(--bd)}.cd>div{flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center;min-width:0}
+.th{width:104px;height:150px;border-radius:12px;object-fit:cover;background:var(--bd);flex:none}.tg{font-size:12px;font-weight:800;color:var(--ac);letter-spacing:.06em}
+.cd b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cd .pr{height:48px;margin-top:6px;font-size:15px}
+.stp{display:flex;align-items:center;gap:12px;color:#D0D0DA;font-size:14px;margin-bottom:12px}.stp i{font-style:normal;width:28px;height:28px;border-radius:50%;background:var(--sf);border:1px solid var(--bd);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.pill{padding:8px 14px;border-radius:999px;background:var(--sf);border:1px solid var(--bd);font-size:13px;font-weight:600}.bar{height:6px;border-radius:3px;background:var(--bd)}.bar i{display:block;height:6px;border-radius:3px;background:var(--ac);width:0;transition:width 1s linear}
+.ok{width:88px;height:88px;border-radius:50%;background:#3DDC97;color:#0E0E12;display:grid;place-items:center;margin:24px auto 0}.c{text-align:center}
+.seo{padding:20px;border-radius:16px;background:var(--sf);border:1px solid var(--bd)}.seo p{color:#C8C8D4;font-size:14px;margin:0 0 12px}
+details{border-top:1px solid var(--bd);padding:12px 0}summary{cursor:pointer;font-weight:600;font-size:14px}details p{margin:8px 0 0}
+footer{color:var(--mu);font-size:12px;text-align:center}footer a{color:var(--mu)}
+</style></head><body data-v="home"><div class="w">
+<div class="hd"><a class="lg" href="/"><span class="lm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg></span>{{site}}</a>
+{% if p.lang=='bn' %}<a class="lang" href="/">English</a>{% else %}<a class="lang" href="/bangla">বাংলা</a>{% endif %}</div>
+
+<main id="v-home" class="view"><div><h1>{{p.h1}}</h1><p class="sub">{{p.desc}}</p></div>
+<div><label for="u">Instagram link</label><div class="row"><input id="u" type="url" inputmode="url" placeholder="https://instagram.com/reel/..." autocomplete="off"><button class="sc" id="pb">Paste</button></div>
+<button class="pr" id="go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>Download</button><div id="msg" role="status" aria-live="polite"></div></div>
+<nav class="chips" aria-label="Tools">{% for s,q in pages.items() if s %}<a href="/{{s}}">{{q.h1}}</a>{% endfor %}</nav>
+<div class="slot">{{ad_slot|safe if ad_slot else 'Ad space'}}</div>
+<div><div class="stp"><i>1</i>Paste the post or profile link</div><div class="stp"><i>2</i>Watch a short ad</div><div class="stp"><i>3</i>Your file downloads automatically</div></div></main>
+
+<section id="v-prev" class="view"><div style="display:flex;align-items:center;gap:12px"><button class="bk" id="b1" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><b style="font-size:18px">Ready to download</b></div>
+<div id="res" style="display:flex;flex-direction:column;gap:12px"></div><p class="sub c">Download starts automatically after the ad.</p></section>
+
+<section id="v-ad" class="view"><div style="display:flex;justify-content:space-between;align-items:center"><span class="pill" id="gc">Ad</span><span class="mu">Reward unlocks download</span></div>
+<div class="slot" style="min-height:300px">{{ad_slot|safe if ad_slot else 'Ad plays here'}}</div>
+<div class="bar"><i id="gb"></i></div><p class="sub c">Please wait. Your download starts next.</p><button class="sc" id="cx">Cancel</button></section>
+
+<section id="v-done" class="view"><div class="c"><div class="ok"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></div>
+<h1 style="margin-top:16px">Download started</h1><p class="sub">Check your Downloads or Gallery. No watermark.</p></div>
+<button class="sc" id="ag" style="height:52px">Download again</button><button class="pr" id="an">Download another</button></section>
+
+<section class="seo"><h2>{{p.h1}}</h2><p>{{p.text}}</p><h2 style="margin-top:16px">FAQ</h2>
+<details><summary>Is it free?</summary><p>Yes, the service is supported by ads.</p></details>
+<details><summary>Does it work for private accounts?</summary><p>No, only public content can be downloaded.</p></details>
+<details><summary>Is there a watermark?</summary><p>No, the original file is saved.</p></details></section>
+<footer><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/dmca">DMCA</a><br>Not affiliated with Instagram or Meta. Download only content you own or have permission to use.</footer></div>
 <script>
-const $=s=>document.querySelector(s),G={{gate}};
-$('#pb').onclick=async()=>{try{$('#u').value=await navigator.clipboard.readText()}catch(e){$('#msg').textContent='Paste manually (long press).'}};
-function start(it,i){const gate=$('#gate');gate.classList.add('on');let t=G;$('#gb').style.width='0';$('#gc').textContent=t+'s';
- const iv=setInterval(()=>{t--;$('#gb').style.width=((G-t)/G*100)+'%';$('#gc').textContent=t>0?t+'s':'';
-  if(t<=0){clearInterval(iv);gate.classList.remove('on');location.href='/api/dl?u='+encodeURIComponent(it.url)+'&n=reelsave_'+Date.now()+'.'+it.ext}},1000);}
-$('#go').onclick=async()=>{const url=$('#u').value.trim();if(!url)return;$('#msg').textContent='Loading...';$('#res').textContent='';
- try{const r=await fetch('/api/info',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});const d=await r.json();if(!r.ok)throw new Error(d.error);
-  $('#msg').textContent='';d.items.forEach((it,i)=>{const c=document.createElement('div');c.className='card';const im=document.createElement('img');
-   if(it.thumb)im.src='/api/dl?inline=1&u='+encodeURIComponent(it.thumb);im.alt='';const w=document.createElement('div');const t=document.createElement('b');
-   t.textContent=(it.kind==='video'?'Video':'Photo')+' '+(d.items.length>1?i+1:'');const b=document.createElement('button');b.className='pri';b.textContent='Watch ad & download';b.onclick=()=>start(it,i);
-   w.append(t,b);c.append(im,w);$('#res').append(c)})}catch(e){$('#msg').textContent=e.message}};
+const $=s=>document.querySelector(s),G={{gate}},N={{ (site|lower|replace(' ',''))|tojson }};
+const PL='<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',DL=$('#go').innerHTML;let cur,iv;
+const show=v=>{document.body.dataset.v=v;scrollTo(0,0)},link=i=>'/api/dl?u='+encodeURIComponent(i.url)+'&n='+N+'_'+Date.now()+'.'+i.ext;
+$('#pb').onclick=async()=>{try{$('#u').value=await navigator.clipboard.readText()}catch(e){$('#msg').textContent='Press and hold in the box to paste.'}};
+$('#u').onkeydown=e=>{if(e.key==='Enter')$('#go').click()};$('#b1').onclick=()=>show('home');
+$('#an').onclick=()=>{$('#u').value='';show('home')};$('#ag').onclick=()=>start(cur);$('#cx').onclick=()=>{clearInterval(iv);show('prev')};
+function start(it){cur=it;show('ad');let t=G;$('#gb').style.width='0';$('#gc').textContent='Ad \u00b7 '+t+'s left';clearInterval(iv);
+ iv=setInterval(()=>{t--;$('#gb').style.width=((G-t)/G*100)+'%';$('#gc').textContent='Ad \u00b7 '+Math.max(t,0)+'s left';
+  if(t<=0){clearInterval(iv);location.href=link(cur);show('done')}},1000)}
+$('#go').onclick=async()=>{const url=$('#u').value.trim(),b=$('#go');if(!url){$('#msg').textContent='Paste an Instagram link first.';return}
+ $('#msg').textContent='';b.disabled=true;b.innerHTML='<span class="sp"></span>Fetching...';
+ try{const r=await fetch('/api/info',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})}),d=await r.json();if(!r.ok)throw new Error(d.error);
+  const R=$('#res');R.textContent='';d.items.forEach((it,i)=>{const c=document.createElement('div');c.className='cd';const im=document.createElement('img');im.className='th';im.alt='';
+   if(it.thumb)im.src='/api/dl?inline=1&u='+encodeURIComponent(it.thumb);const w=document.createElement('div'),g=document.createElement('span'),t=document.createElement('b'),k=document.createElement('button');
+   g.className='tg';g.textContent=it.kind==='video'?'VIDEO':'PHOTO';t.textContent=(it.title||'Instagram')+(d.items.length>1?' #'+(i+1):'');
+   k.className='pr';k.innerHTML=PL+'Watch ad & download';k.onclick=()=>start(it);w.append(g,t,k);c.append(im,w);R.append(c)});show('prev')}
+ catch(e){$('#msg').textContent=e.message}finally{b.disabled=false;b.innerHTML=DL}};
 </script></body></html>
